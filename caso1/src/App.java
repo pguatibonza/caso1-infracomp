@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
@@ -7,18 +8,23 @@ public class App {
         int tamanioBuzonGrande=scanner.nextInt();
         System.out.println("Ingrese el tamaño del buzon intermedio: ");
         int tamanioBuzon=scanner.nextInt();
-
+        System.out.println("Ingrese la cantidad de subconjuntos: ");
+        int n=scanner.nextInt();
+        LinkedList<String> subconjuntos= crearSubconjuntos(n);
+        
+        
+        
         //Creacion de los buzones
         Buzon buzonInicio= new Buzon(tamanioBuzonGrande);
         Buzon buzonFinal= new Buzon(tamanioBuzonGrande);
-        Buzon[][] buzonesIntermedios=new Buzon[2][3];
-        for(int i=0;i<2;i++){
-            for(int j=0;j<3;j++){
+        Buzon[][] buzonesIntermedios=new Buzon[3][2];
+        for(int i=0;i<3;i++){
+            for(int j=0;j<2;j++){
                 buzonesIntermedios[i][j]=new Buzon(tamanioBuzon);
             }
         }
         //Creacion de los procesos
-        ProcesoInicial procesoInicial= new ProcesoInicial(buzonInicio);
+        ProcesoInicial procesoInicial= new ProcesoInicial(buzonInicio,subconjuntos);
         ProcesoFinal procesoFinal=new ProcesoFinal(buzonFinal);
         ProcesoIntermedio[][] procesosIntermedios=new ProcesoIntermedio[3][3];
         for(int i=0;i<3;i++){
@@ -35,9 +41,17 @@ public class App {
             }
         }
         //Inicio de los procesos
-        
-
-
-
     }
+    
+    //Metodo para crear los subconjuntos
+    public static LinkedList<String> crearSubconjuntos( int n){
+        LinkedList<String> subconjuntos= new LinkedList<String>();
+        for(int i=0;i<n;i++){
+            subconjuntos.add("M"+i);
+        }
+        return subconjuntos;
+    }
+
 }
+
+
