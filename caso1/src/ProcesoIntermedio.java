@@ -4,6 +4,7 @@ public class ProcesoIntermedio extends Thread {
     private Buzon buzonSalida;
     private int numProceso;
     private int nivelTransformacion;
+    private String mensajeActual;
 
 
     public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalia,int numProceso, int nivelTransformacion) {
