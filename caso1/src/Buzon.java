@@ -7,5 +7,6 @@ public class Buzon {
     public Buzon(int tamanioBuzon) {
         this.tamanioBuzon = tamanioBuzon;
     }
+    
 
 }
