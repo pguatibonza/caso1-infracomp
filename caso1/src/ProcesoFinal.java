@@ -35,6 +35,7 @@ public class ProcesoFinal extends Thread {
             }
             System.out.println("mensaje recibido.....................: " + mensaje);
             buzon.notifyAll();
+            receive();
         }
 
     }
@@ -48,7 +49,8 @@ public class ProcesoFinal extends Thread {
 
     // metodo para ejecutar el proceso
     public void run() {
-        receive();
-
+        while(contador<3){
+            receive();
+        }
     }
 }
