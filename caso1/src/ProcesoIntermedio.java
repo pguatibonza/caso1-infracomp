@@ -1,3 +1,7 @@
+import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 public class ProcesoIntermedio extends Thread {
 
     private Buzon buzonEntrada;
@@ -6,13 +10,15 @@ public class ProcesoIntermedio extends Thread {
     private int nivelTransformacion;
     private String mensajeActual;
     private boolean fin=false;
+    private CyclicBarrier barrera;
 
 
-    public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalida,int numProceso, int nivelTransformacion) {
+    public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalida,int numProceso, int nivelTransformacion,CyclicBarrier barrera) {
         this.buzonEntrada=buzonEntrada;
         this.buzonSalida=buzonSalida;
         this.numProceso=numProceso;
         this.nivelTransformacion=nivelTransformacion;
+        this.barrera=barrera;
     }
 
     //metodo para recoger un mensaje del buzon de entrada
@@ -29,17 +35,19 @@ public class ProcesoIntermedio extends Thread {
             System.out.println("mensaje recibido: " + mensajeActual);
             if(!mensajeActual.equals("FIN")){
                 mensajeActual=mensajeActual+ "T" + nivelTransformacion+"" + numProceso;
-                buzonEntrada.notifyAll();   
+                
             }
             else{
                 fin=true;
             }
+            buzonEntrada.notifyAll();   
             
         }
       
     }
     //metodo para enviar un mensaje al buzon de salida
     public void send(){
+        Random random=new Random();
         synchronized(buzonSalida){
             while(buzonSalida.isFull()){
                 try{
@@ -49,6 +57,13 @@ public class ProcesoIntermedio extends Thread {
                     e.printStackTrace();
                 }
             }
+            //pone a dormir el hilo antes de enviar el mensaje
+            try {
+                Thread.sleep(random.nextInt(50,500));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             buzonSalida.add(mensajeActual);
             System.out.println("mensaje enviado : " +mensajeActual);
             buzonSalida.notifyAll();
@@ -60,6 +75,15 @@ public class ProcesoIntermedio extends Thread {
         while(!fin){
             receive();
             send();
+        }
+        try {
+            barrera.await();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
   

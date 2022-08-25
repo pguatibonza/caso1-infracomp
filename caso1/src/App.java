@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.CyclicBarrier;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -11,6 +12,7 @@ public class App {
         System.out.println("Ingrese la cantidad de subconjuntos: ");
         int n=scanner.nextInt();
         LinkedList<String> subconjuntos= crearSubconjuntos(n);
+        CyclicBarrier barrera= new CyclicBarrier(11);
         //imprimir todos los subconjuntos
         
         
@@ -24,19 +26,19 @@ public class App {
             }
         }
         //Creacion de los procesos
-        ProcesoInicial procesoInicial= new ProcesoInicial(buzonInicio,subconjuntos);
-        ProcesoFinal procesoFinal=new ProcesoFinal(buzonFinal);
+        ProcesoInicial procesoInicial= new ProcesoInicial(buzonInicio,subconjuntos,barrera);
+        ProcesoFinal procesoFinal=new ProcesoFinal(buzonFinal,barrera);
         ProcesoIntermedio[][] procesosIntermedios=new ProcesoIntermedio[3][3];
         for(int i=0;i<3;i++){
             for(int j=0;j<3;j++){
                 if (j==0){
-                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonInicio, buzonesIntermedios[i][j],i,j);
+                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonInicio, buzonesIntermedios[i][j],i,j,barrera);
                 }
                 else if (j==1){
-                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonesIntermedios[i][j],i,j);
+                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonesIntermedios[i][j],i,j,barrera);
                 }
                 else{
-                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonFinal,i,j);
+                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonFinal,i,j,barrera);
                 }
             }
         }
@@ -47,6 +49,20 @@ public class App {
                 procesosIntermedios[i][j].start();
             }
         }
+        procesoFinal.start();
+        //Espera a que los procesos terminen
+        procesoInicial.join();
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                procesosIntermedios[i][j].join();
+            }
+        }
+        procesoFinal.join();
+        //Imprimir los buzones
+        procesoFinal.print();
+
+       
+        
     }
     
     //Metodo para crear los subconjuntos
