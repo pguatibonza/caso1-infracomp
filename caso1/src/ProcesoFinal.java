@@ -6,11 +6,11 @@ public class ProcesoFinal extends Thread {
     private LinkedList<String> subconjuntos = new LinkedList<String>();
     private Buzon buzon;
     private int contador = 0;
-    private CyclicBarrier barrera;
+    
 
-    public ProcesoFinal(Buzon buzon, CyclicBarrier barrera) {
+    public ProcesoFinal(Buzon buzon ) {
         this.buzon = buzon;
-        this.barrera = barrera;
+        
     }
 
     // metodo para recibir mensajes del buzon
@@ -49,14 +49,6 @@ public class ProcesoFinal extends Thread {
     // metodo para ejecutar el proceso
     public void run() {
         receive();
-        try {
-            barrera.await();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (BrokenBarrierException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
     }
 }

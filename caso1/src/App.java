@@ -12,7 +12,7 @@ public class App {
         System.out.println("Ingrese la cantidad de subconjuntos: ");
         int n=scanner.nextInt();
         LinkedList<String> subconjuntos= crearSubconjuntos(n);
-        CyclicBarrier barrera= new CyclicBarrier(11);
+        
         //imprimir todos los subconjuntos
         
         
@@ -26,19 +26,19 @@ public class App {
             }
         }
         //Creacion de los procesos
-        ProcesoInicial procesoInicial= new ProcesoInicial(buzonInicio,subconjuntos,barrera);
-        ProcesoFinal procesoFinal=new ProcesoFinal(buzonFinal,barrera);
+        ProcesoInicial procesoInicial= new ProcesoInicial(buzonInicio,subconjuntos);
+        ProcesoFinal procesoFinal=new ProcesoFinal(buzonFinal);
         ProcesoIntermedio[][] procesosIntermedios=new ProcesoIntermedio[3][3];
         for(int i=0;i<3;i++){
             for(int j=0;j<3;j++){
                 if (j==0){
-                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonInicio, buzonesIntermedios[i][j],i,j,barrera);
+                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonInicio, buzonesIntermedios[i][j],i,j);
                 }
                 else if (j==1){
-                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonesIntermedios[i][j],i,j,barrera);
+                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonesIntermedios[i][j],i,j);
                 }
                 else{
-                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonFinal,i,j,barrera);
+                    procesosIntermedios[i][j]=new ProcesoIntermedio(buzonesIntermedios[i][j-1], buzonFinal,i,j);
                 }
             }
         }

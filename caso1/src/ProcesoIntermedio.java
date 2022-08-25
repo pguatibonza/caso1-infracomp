@@ -10,15 +10,15 @@ public class ProcesoIntermedio extends Thread {
     private int nivelTransformacion;
     private String mensajeActual;
     private boolean fin=false;
-    private CyclicBarrier barrera;
+    
 
 
-    public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalida,int numProceso, int nivelTransformacion,CyclicBarrier barrera) {
+    public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalida,int numProceso, int nivelTransformacion) {
         this.buzonEntrada=buzonEntrada;
         this.buzonSalida=buzonSalida;
         this.numProceso=numProceso;
         this.nivelTransformacion=nivelTransformacion;
-        this.barrera=barrera;
+        
     }
 
     //metodo para recoger un mensaje del buzon de entrada
@@ -76,15 +76,8 @@ public class ProcesoIntermedio extends Thread {
             receive();
             send();
         }
-        try {
-            barrera.await();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (BrokenBarrierException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+       
     }
   
 }
