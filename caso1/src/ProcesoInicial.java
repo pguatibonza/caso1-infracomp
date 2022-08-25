@@ -17,7 +17,12 @@ public class ProcesoInicial extends Thread {
         synchronized (buzon) {
             while (!subconjuntos.isEmpty()) {
                 while (buzon.isFull()) {
-                    this.yield();
+                    try {
+                        buzon.wait();
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
                 if (subconjuntos.size() > 0) {
                     buzon.add(subconjuntos.removeFirst());
@@ -38,10 +43,6 @@ public class ProcesoInicial extends Thread {
 
     public void run() {
         send();
-        
-       
-        
-
     }
 
 }

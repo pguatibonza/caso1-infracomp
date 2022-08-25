@@ -39,6 +39,7 @@ public class ProcesoIntermedio extends Thread {
             }
             else{
                 fin=true;
+                System.out.println("Fin del proceso");	
             }
             buzonEntrada.notifyAll();   
             

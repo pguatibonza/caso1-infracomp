@@ -50,16 +50,8 @@ public class App {
             }
         }
         procesoFinal.start();
-        //Espera a que los procesos terminen
-        procesoInicial.join();
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++){
-                procesosIntermedios[i][j].join();
-            }
-        }
-        procesoFinal.join();
-        //Imprimir los buzones
-        procesoFinal.print();
+       
+        
 
        
         

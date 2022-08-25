@@ -27,6 +27,7 @@ public class ProcesoFinal extends Thread {
             String mensaje = buzon.send();
             if (mensaje.equals("FIN")) {
                 contador++;
+                System.out.println("FIN");
             } else {
                 subconjuntos.add(mensaje);
             }
@@ -35,7 +36,7 @@ public class ProcesoFinal extends Thread {
             }
             System.out.println("mensaje recibido.....................: " + mensaje);
             buzon.notifyAll();
-            receive();
+           
         }
 
     }
@@ -52,5 +53,6 @@ public class ProcesoFinal extends Thread {
         while(contador<3){
             receive();
         }
+        print();
     }
 }
