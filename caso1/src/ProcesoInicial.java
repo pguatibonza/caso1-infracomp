@@ -13,13 +13,12 @@ public class ProcesoInicial extends Thread {
         // enviar los subconjuntos al buzon de inicio
         while (!subconjuntos.isEmpty()) {
 
-            // espera activa
+            // espera  para que el buzon no este lleno
             while (buzon.isFull()) {
-                
+                ProcesoInicial.yield();
             }
             // envia el mensaje al buzon
             if (subconjuntos.size() > 0) {
-                
                 buzon.add(subconjuntos.removeFirst());
             }
 

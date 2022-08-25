@@ -5,6 +5,7 @@ public class ProcesoIntermedio extends Thread {
     private int numProceso;
     private int nivelTransformacion;
     private String mensajeActual;
+    private boolean fin=false;
 
 
     public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalida,int numProceso, int nivelTransformacion) {
@@ -15,7 +16,6 @@ public class ProcesoIntermedio extends Thread {
     }
 
     //metodo para recoger un mensaje del buzon de entrada
-
     public void receive() {
         synchronized(buzonEntrada){
             while(buzonEntrada.isEmpty()){
@@ -25,9 +25,16 @@ public class ProcesoIntermedio extends Thread {
                     e.printStackTrace();
                 }
             }
-            mensajeActual=buzonEntrada.send() + "T" + numProceso+"" + nivelTransformacion;
+            mensajeActual=buzonEntrada.send();
             System.out.println("mensaje recibido: " + mensajeActual);
-            buzonEntrada.notifyAll();
+            if(!mensajeActual.equals("FIN")){
+                mensajeActual=mensajeActual+ "T" + nivelTransformacion+"" + numProceso;
+                buzonEntrada.notifyAll();   
+            }
+            else{
+                fin=true;
+            }
+            
         }
       
     }
@@ -50,9 +57,10 @@ public class ProcesoIntermedio extends Thread {
     }
 
     public void run(){
-        receive();
-        send();
-
+        while(!fin){
+            receive();
+            send();
+        }
     }
   
 }
