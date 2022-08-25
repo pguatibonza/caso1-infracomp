@@ -11,7 +11,7 @@ public class App {
         System.out.println("Ingrese la cantidad de subconjuntos: ");
         int n=scanner.nextInt();
         LinkedList<String> subconjuntos= crearSubconjuntos(n);
-        
+        //imprimir todos los subconjuntos
         
         
         //Creacion de los buzones
@@ -41,6 +41,13 @@ public class App {
             }
         }
         //Inicio de los procesos
+
+        procesoInicial.start();
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                procesosIntermedios[i][j].start();
+            }
+        }
     }
     
     //Metodo para crear los subconjuntos
