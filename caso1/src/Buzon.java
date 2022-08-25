@@ -11,6 +11,7 @@ public class Buzon {
     public void add(String mensaje) {
         if (buzon.size() < tamanioBuzon) {
             buzon.add(mensaje);
+
         }
     }
     //Metodo para enviar un mensaje del buzon

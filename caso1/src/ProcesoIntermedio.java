@@ -32,14 +32,14 @@ public class ProcesoIntermedio extends Thread {
                 }
             }
             mensajeActual=buzonEntrada.send();
-            System.out.println("mensaje recibido: " + mensajeActual);
+            //System.out.println("mensaje recibido: " + mensajeActual);
             if(!mensajeActual.equals("FIN")){
                 mensajeActual=mensajeActual+ "T" + nivelTransformacion+"" + numProceso;
                 
             }
             else{
                 fin=true;
-                System.out.println("Fin del proceso");	
+                //System.out.println("Fin del proceso "+nivelTransformacion +" " + numProceso);	
             }
             buzonEntrada.notifyAll();   
             
@@ -66,7 +66,7 @@ public class ProcesoIntermedio extends Thread {
             }
 
             buzonSalida.add(mensajeActual);
-            System.out.println("mensaje enviado : " +mensajeActual);
+            //System.out.println("mensaje enviado : " +mensajeActual);
             buzonSalida.notifyAll();
         }
 

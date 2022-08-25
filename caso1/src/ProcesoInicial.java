@@ -5,6 +5,8 @@ import java.util.concurrent.CyclicBarrier;
 public class ProcesoInicial extends Thread {
     private Buzon buzon;
     private LinkedList<String> subconjuntos;
+    private boolean flag=true;
+
     
 
     public ProcesoInicial(Buzon buzon, LinkedList<String> subconjuntos) {
@@ -15,7 +17,7 @@ public class ProcesoInicial extends Thread {
 
     public void send() {
         synchronized (buzon) {
-            while (!subconjuntos.isEmpty()) {
+            while (!subconjuntos.isEmpty() || flag) {
                 while (buzon.isFull()) {
                     try {
                         buzon.wait();
@@ -27,15 +29,16 @@ public class ProcesoInicial extends Thread {
                 if (subconjuntos.size() > 0) {
                     buzon.add(subconjuntos.removeFirst());
                 }
-                buzon.notifyAll();
-            }
-            // envia 3 mensajes de fin
-
-            if (subconjuntos.size() == 0) {
-                for (int i = 0; i < 3; i++) {
-                    buzon.add("FIN");
+                // envia 3 mensajes de fin
+                if (subconjuntos.size() == 0 && flag) {
+                    for (int i = 0; i < 3; i++) {
+                        subconjuntos.add("FIN");
+                    }
+                    flag=false;
+                    
                 }
-            }
+                buzon.notifyAll();
+            }   
         }
     }
 

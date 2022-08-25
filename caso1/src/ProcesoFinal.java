@@ -32,9 +32,9 @@ public class ProcesoFinal extends Thread {
                 subconjuntos.add(mensaje);
             }
             if (contador == 3) {
-                System.out.println("Fin del proceso");
+                System.out.println("Fin del proceso, 3 fins");
             }
-            System.out.println("mensaje recibido.....................: " + mensaje);
+            //System.out.println("mensaje recibido en proceso final: " + mensaje);
             buzon.notifyAll();
            
         }
