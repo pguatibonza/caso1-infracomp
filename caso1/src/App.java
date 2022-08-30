@@ -63,6 +63,11 @@ public class App {
         for(int i=0;i<n;i++){
             subconjuntos.add("M"+i);
         }
+        
+        for(int i=0;i<3;i++){
+            subconjuntos.add("FIN");
+        }
+
         return subconjuntos;
     }
 
