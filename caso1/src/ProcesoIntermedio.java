@@ -9,76 +9,76 @@ public class ProcesoIntermedio extends Thread {
     private int numProceso;
     private int nivelTransformacion;
     private String mensajeActual;
-    private boolean fin=false;
-    
+    private boolean fin = false;
 
+    public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalida, int numProceso, int nivelTransformacion) {
+        this.buzonEntrada = buzonEntrada;
+        this.buzonSalida = buzonSalida;
+        this.numProceso = numProceso;
+        this.nivelTransformacion = nivelTransformacion;
 
-    public ProcesoIntermedio(Buzon buzonEntrada, Buzon buzonSalida,int numProceso, int nivelTransformacion) {
-        this.buzonEntrada=buzonEntrada;
-        this.buzonSalida=buzonSalida;
-        this.numProceso=numProceso;
-        this.nivelTransformacion=nivelTransformacion;
-        
     }
 
-    //metodo para recoger un mensaje del buzon de entrada
+    // metodo para recoger un mensaje del buzon de entrada
     public void receive() {
-        synchronized(buzonEntrada){
-            while(buzonEntrada.isEmpty()){
+        synchronized (buzonEntrada) {
+            while (buzonEntrada.isEmpty()) {
                 try {
                     buzonEntrada.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            mensajeActual=buzonEntrada.send();
-            //System.out.println("mensaje recibido: " + mensajeActual);
-            if(!mensajeActual.equals("FIN")){
-                mensajeActual=mensajeActual+ "T" + nivelTransformacion+"" + numProceso;
-                
+            mensajeActual = buzonEntrada.send();
+            // System.out.println("mensaje recibido: " + mensajeActual);
+            if (!mensajeActual.equals("FIN")) {
+                mensajeActual = mensajeActual + "T" + nivelTransformacion + "" + numProceso;
+
+            } else {
+                fin = true;
+                // System.out.println("Fin del proceso "+nivelTransformacion +" " + numProceso);
             }
-            else{
-                fin=true;
-                //System.out.println("Fin del proceso "+nivelTransformacion +" " + numProceso);	
-            }
-            buzonEntrada.notifyAll();   
-            
+            buzonEntrada.notifyAll();
+
         }
-      
+
     }
-    //metodo para enviar un mensaje al buzon de salida
-    public void send(){
-        Random random=new Random();
-        synchronized(buzonSalida){
-            while(buzonSalida.isFull()){
-                try{
+
+    // metodo para enviar un mensaje al buzon de salida
+    public void send() {
+        Random random = new Random();
+        synchronized (buzonSalida) {
+            while (buzonSalida.isFull()) {
+                try {
                     buzonSalida.wait();
-                }
-                catch(InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            //pone a dormir el hilo antes de enviar el mensaje
+            // pone a dormir el hilo antes de enviar el mensaje
             try {
-                Thread.sleep(random.nextInt(50,500));
+                int espera = random.nextInt(50, 500);
+
+                Thread.sleep(espera);
+                //System.out.println("espera : " + espera);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             buzonSalida.add(mensajeActual);
-            //System.out.println("mensaje enviado : " +mensajeActual);
+            // System.out.println("mensaje enviado : " +mensajeActual);
             buzonSalida.notifyAll();
         }
 
     }
 
-    public void run(){
-        while(!fin){
+    public void run() {
+        while (!fin) {
             receive();
             send();
         }
 
-       
     }
-  
+
 }

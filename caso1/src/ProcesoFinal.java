@@ -25,7 +25,7 @@ public class ProcesoFinal extends Thread {
                 System.out.println("FIN");
             } else {
                 System.out.println(mensaje);
-                subconjuntos.add(mensaje);
+                //subconjuntos.add(mensaje);
             }
             if (contador == 3) {
                 System.out.println("Fin del proceso, 3 fins");
