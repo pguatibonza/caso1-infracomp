@@ -1,6 +1,5 @@
 import java.util.LinkedList;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
+
 
 public class ProcesoFinal extends Thread {
     private LinkedList<String> subconjuntos = new LinkedList<String>();
@@ -24,7 +23,7 @@ public class ProcesoFinal extends Thread {
                 contador++;
                 System.out.println("FIN");
             } else {
-                //System.out.println(mensaje);
+                System.out.println(mensaje);
                 subconjuntos.add(mensaje);
             }
             if (contador == 3) {
